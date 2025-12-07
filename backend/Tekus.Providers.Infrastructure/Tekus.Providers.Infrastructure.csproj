@@ -19,8 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tekus.Providers.Domain\Tekus.Providers.Domain.csproj" />
   </ItemGroup>
 
 </Project>

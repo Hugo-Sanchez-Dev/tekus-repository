@@ -16,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Tekus.Providers.Application\Tekus.Providers.Application.csproj" />
+    <ProjectReference Include="..\Tekus.Providers.Infrastructure\Tekus.Providers.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
