@@ -11,11 +11,11 @@
         public virtual Provider Provider { get; set; }
         public virtual Catalog Catalog { get; set; }
 
-        public ProviderCatalog(Guid providerId, Guid serviceId, string countries)
+        public ProviderCatalog(Guid providerId, Guid catalogId, string countries)
         {
             Id = Guid.NewGuid();
             ProviderId = providerId;
-            CatalogId = serviceId;
+            CatalogId = catalogId;
             Countries = countries ?? "[]";
             CreatedAt = DateTime.UtcNow;
         }

@@ -1,4 +1,5 @@
 ﻿#region Usings
+using AutoMapper;
 using System.Text.Json;
 using Tekus.Providers.Application.DTOs.Provider;
 using Tekus.Providers.Application.Interfaces.Provider;
@@ -11,22 +12,24 @@ namespace Tekus.Providers.Application.Services
     public class ProviderService : IProviderService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProviderService(IUnitOfWork unitOfWork)
+        public ProviderService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<ProviderDTO>> GetAllAsync()
         {
             IEnumerable<Provider> providers = await _unitOfWork.Providers.GetAllAsync();
-            return providers.Select(MapToDto);
+            return _mapper.Map<IEnumerable<ProviderDTO>>(providers);
         }
 
         public async Task<ProviderDTO?> GetByIdAsync(Guid id)
         {
             Provider? provider = await _unitOfWork.Providers.GetByIdAsync(id);
-            return provider == null ? null : MapToDto(provider);
+            return provider == null ? null : _mapper.Map<ProviderDTO>(provider);
         }
 
         public async Task<ProviderDTO> CreateAsync(CreateProviderDTO dto)
@@ -42,7 +45,7 @@ namespace Tekus.Providers.Application.Services
             await _unitOfWork.Providers.AddAsync(provider);
             await _unitOfWork.SaveChangesAsync();
 
-            return MapToDto(provider);
+            return _mapper.Map<ProviderDTO>(provider);
         }
 
         public async Task<ProviderDTO> UpdateAsync(Guid id, UpdateProviderDTO dto)
@@ -59,32 +62,13 @@ namespace Tekus.Providers.Application.Services
             await _unitOfWork.Providers.UpdateAsync(provider);
             await _unitOfWork.SaveChangesAsync();
 
-            return MapToDto(provider);
+            return _mapper.Map<ProviderDTO>(provider);
         }
 
         public async Task DeleteAsync(Guid id)
         {
             await _unitOfWork.Providers.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
-        }
-
-        private static ProviderDTO MapToDto(Provider provider)
-        {
-            Dictionary<string, object>? customFields = null;
-            if (!string.IsNullOrEmpty(provider.CustomFields))
-            {
-                customFields = JsonSerializer.Deserialize<Dictionary<string, object>>(provider.CustomFields);
-            }
-
-            return new ProviderDTO(
-                provider.Id,
-                provider.Nit,
-                provider.Name,
-                provider.Email,
-                customFields,
-                provider.CreatedAt,
-                provider.UpdatedAt
-            );
         }
     }
 }

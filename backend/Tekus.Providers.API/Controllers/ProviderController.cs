@@ -24,17 +24,31 @@ namespace Tekus.Providers.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var providers = await _providerService.GetAllAsync();
-            return Ok(providers);
+            try
+            {
+                var providers = await _providerService.GetAllAsync();
+                return Ok(providers);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var provider = await _providerService.GetByIdAsync(id);
-            if (provider == null)
-                return NotFound();
-            return Ok(provider);
+            try
+            {
+                var provider = await _providerService.GetByIdAsync(id);
+                if (provider == null)
+                    return NotFound();
+                return Ok(provider);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost]

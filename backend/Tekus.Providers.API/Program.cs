@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Tekus.Providers.Application.Interfaces.Auth;
 using Tekus.Providers.Application.Interfaces.Catalog;
 using Tekus.Providers.Application.Interfaces.Country;
 using Tekus.Providers.Application.Interfaces.Provider;
 using Tekus.Providers.Application.Interfaces.ProviderCatalog;
+using Tekus.Providers.Application.Mapping;
 using Tekus.Providers.Application.Services;
+using Tekus.Providers.Application.Services.Auth;
 using Tekus.Providers.Domain.Repositories;
 using Tekus.Providers.Infrastructure.Data;
 using Tekus.Providers.Infrastructure.Repositories;
@@ -23,6 +26,7 @@ builder.Services.AddDbContext<TekusProvidersContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Services
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProviderService, ProviderService>();
 builder.Services.AddScoped<ICatalogService, CatalogService>();
 builder.Services.AddScoped<IProviderCatalogService, ProviderCatalogService>();
@@ -55,6 +59,9 @@ builder.Services.AddAuthentication(x =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,9 +1,10 @@
 ﻿namespace Tekus.Providers.Application.DTOs.Provider
 {
-    public record CreateProviderDTO(
-    string Nit,
-    string Name,
-    string Email,
-    Dictionary<string, object>? CustomFields
-    );
+    public class CreateProviderDTO()
+    {
+        public string Nit { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public Dictionary<string, object>? CustomFields { get; set; }
+    }
 }

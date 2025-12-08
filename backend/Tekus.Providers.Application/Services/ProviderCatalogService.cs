@@ -1,4 +1,5 @@
 ﻿#region Usings
+using AutoMapper;
 using System.Text.Json;
 using Tekus.Providers.Application.DTOs.ProviderCatalog;
 using Tekus.Providers.Application.Interfaces.ProviderCatalog;
@@ -11,22 +12,24 @@ namespace Tekus.Providers.Application.Services
     public class ProviderCatalogService : IProviderCatalogService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProviderCatalogService(IUnitOfWork unitOfWork)
+        public ProviderCatalogService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<ProviderCatalogDTO>> GetByProviderIdAsync(Guid providerId)
         {
-            IEnumerable<ProviderCatalog> ProviderCatalogs = await _unitOfWork.ProviderCatalogs.GetByProviderIdAsync(providerId);
-            return ProviderCatalogs.Select(MapToDto);
+            IEnumerable<ProviderCatalog> providerCatalogs = await _unitOfWork.ProviderCatalogs.GetByProviderIdAsync(providerId);
+            return _mapper.Map<IEnumerable<ProviderCatalogDTO>>(providerCatalogs);
         }
 
         public async Task<IEnumerable<ProviderCatalogDTO>> GetByCatalogIdAsync(Guid CatalogId)
         {
-            IEnumerable<ProviderCatalog> ProviderCatalogs = await _unitOfWork.ProviderCatalogs.GetByCatalogIdAsync(CatalogId);
-            return ProviderCatalogs.Select(MapToDto);
+            IEnumerable<ProviderCatalog> providerCatalogs = await _unitOfWork.ProviderCatalogs.GetByCatalogIdAsync(CatalogId);
+            return _mapper.Map<IEnumerable<ProviderCatalogDTO>>(providerCatalogs);
         }
 
         public async Task<ProviderCatalogDTO> CreateAsync(CreateProviderCatalogDTO dto)
@@ -38,7 +41,7 @@ namespace Tekus.Providers.Application.Services
             await _unitOfWork.SaveChangesAsync();
 
             ProviderCatalog? created = await _unitOfWork.ProviderCatalogs.GetByIdAsync(providerCatalog.Id);
-            return MapToDto(created!);
+            return _mapper.Map<ProviderCatalogDTO>(created);
         }
 
         public async Task<ProviderCatalogDTO> UpdateAsync(Guid id, UpdateProviderCatalogDTO dto)
@@ -53,28 +56,13 @@ namespace Tekus.Providers.Application.Services
             await _unitOfWork.ProviderCatalogs.UpdateAsync(providerCatalog);
             await _unitOfWork.SaveChangesAsync();
 
-            return MapToDto(providerCatalog);
+            return _mapper.Map<ProviderCatalogDTO>(providerCatalog);
         }
 
         public async Task DeleteAsync(Guid id)
         {
             await _unitOfWork.ProviderCatalogs.DeleteAsync(id);
             await _unitOfWork.SaveChangesAsync();
-        }
-
-        private static ProviderCatalogDTO MapToDto(ProviderCatalog ps)
-        {
-            List<string> countries = JsonSerializer.Deserialize<List<string>>(ps.Countries) ?? new List<string>();
-
-            return new ProviderCatalogDTO(
-                ps.Id,
-                ps.ProviderId,
-                ps.Provider?.Name ?? "",
-                ps.CatalogId,
-                ps.Catalog?.Name ?? "",
-                countries,
-                ps.CreatedAt
-            );
         }
     }
 }

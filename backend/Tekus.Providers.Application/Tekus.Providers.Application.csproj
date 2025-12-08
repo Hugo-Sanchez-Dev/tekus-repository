@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.22" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mapping\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 

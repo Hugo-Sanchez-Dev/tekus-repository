@@ -1,12 +1,13 @@
 ﻿namespace Tekus.Providers.Application.DTOs.ProviderCatalog
 {
-    public record ProviderCatalogDTO(
-    Guid Id,
-    Guid ProviderId,
-    string ProviderName,
-    Guid CatalogId,
-    string CatalogName,
-    List<string> Countries,
-    DateTime CreatedAt
-    );
+    public class ProviderCatalogDTO()
+    {
+        public Guid Id { get; set; }
+        public Guid ProviderId { get; set; }
+        public string ProviderName { get; set; }
+        public Guid CatalogId { get; set; }
+        public string CatalogName { get; set; }
+        public List<string> Countries { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
 }

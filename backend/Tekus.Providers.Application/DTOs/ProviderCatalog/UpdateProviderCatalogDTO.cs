@@ -1,6 +1,7 @@
 ﻿namespace Tekus.Providers.Application.DTOs.ProviderCatalog
 {
-    public record UpdateProviderCatalogDTO(
-    List<string> Countries
-    );
+    public class UpdateProviderCatalogDTO()
+    {
+        public List<string> Countries { get; set; }
+    }
 }

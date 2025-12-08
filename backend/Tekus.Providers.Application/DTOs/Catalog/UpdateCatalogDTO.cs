@@ -1,7 +1,8 @@
 ﻿namespace Tekus.Providers.Application.DTOs.Catalog
 {
-    public record UpdateCatalogDTO(
-    string Name,
-    decimal HourlyRate
-    );
+    public class UpdateCatalogDTO()
+    {
+        public string Name { get; set; }
+        public decimal HourlyRate { get; set; }
+    }
 }

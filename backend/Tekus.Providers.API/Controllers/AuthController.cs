@@ -1,5 +1,4 @@
 ﻿#region Usings
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tekus.Providers.Application.Interfaces.Auth;
 using Tekus.Providers.Domain.Entities.Auth;

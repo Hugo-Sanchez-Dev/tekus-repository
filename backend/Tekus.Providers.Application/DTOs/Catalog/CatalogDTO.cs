@@ -1,10 +1,11 @@
 ﻿namespace Tekus.Providers.Application.DTOs.Catalog
 {
-    public record CatalogDTO(
-    Guid Id,
-    string Name,
-    decimal HourlyRate,
-    DateTime CreatedAt,
-    DateTime? UpdatedAt
-    );
+    public class CatalogDTO()
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public decimal HourlyRate { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+    }
 }
