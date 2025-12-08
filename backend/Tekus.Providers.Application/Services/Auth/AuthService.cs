@@ -4,10 +4,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Tekus.Providers.Application.Interfaces;
+using Tekus.Providers.Application.Interfaces.Auth;
 #endregion
 
-namespace Tekus.Providers.Application.Services
+namespace Tekus.Providers.Application.Services.Auth
 {
     public class AuthService : IAuthService
     {
@@ -48,7 +48,7 @@ namespace Tekus.Providers.Application.Services
                 DateTime.UtcNow.AddDays(1)
             );
 
-            var token = new JwtSecurityToken(header, payload);
+            JwtSecurityToken token = new JwtSecurityToken(header, payload);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

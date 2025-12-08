@@ -3,9 +3,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Tekus.Providers.Application.Interfaces;
+using Tekus.Providers.Application.Interfaces.Catalog;
+using Tekus.Providers.Application.Interfaces.Country;
+using Tekus.Providers.Application.Interfaces.Provider;
+using Tekus.Providers.Application.Interfaces.ProviderCatalog;
 using Tekus.Providers.Application.Services;
+using Tekus.Providers.Domain.Repositories;
 using Tekus.Providers.Infrastructure.Data;
+using Tekus.Providers.Infrastructure.Repositories;
 #endregion
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,8 +19,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TekusProvidersContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TekusAPIConnection")));
 
+// Repositories
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 // Services
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProviderService, ProviderService>();
+builder.Services.AddScoped<ICatalogService, CatalogService>();
+builder.Services.AddScoped<IProviderCatalogService, ProviderCatalogService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
+
+// HttpClient for country API
+builder.Services.AddHttpClient<ICountryService, CountryService>(client =>
+{
+    client.BaseAddress = new Uri("https://restcountries.com/v3.1/");
+});
 
 // JWT Authentication
 builder.Services.AddAuthentication(x =>

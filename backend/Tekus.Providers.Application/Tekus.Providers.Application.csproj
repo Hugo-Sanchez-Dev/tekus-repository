@@ -10,4 +10,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.22" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mapping\" />
+    <Folder Include="Validators\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tekus.Providers.Domain\Tekus.Providers.Domain.csproj" />
+    <ProjectReference Include="..\Tekus.Providers.Infrastructure\Tekus.Providers.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
 ﻿#region Usings
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tekus.Providers.Application.Interfaces;
+using Tekus.Providers.Application.Interfaces.Auth;
 using Tekus.Providers.Domain.Entities.Auth;
 #endregion
 
@@ -30,7 +30,7 @@ namespace Tekus.Providers.API.Controllers
         {
             if (request.User == USERNAME && request.Password == PASSWORD)
             {
-                var token = _authService.GenerateJwtToken();
+                string token = _authService.GenerateJwtToken();
                 return Ok(new { token });
             }
 

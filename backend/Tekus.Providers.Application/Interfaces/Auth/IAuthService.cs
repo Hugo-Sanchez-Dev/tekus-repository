@@ -1,4 +1,4 @@
-﻿namespace Tekus.Providers.Application.Interfaces
+﻿namespace Tekus.Providers.Application.Interfaces.Auth
 {
     public interface IAuthService
     {
