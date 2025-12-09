@@ -1,13 +1,10 @@
-﻿using Tekus.Providers.Application.DTOs.Catalog;
+﻿#region Usings
+using Price.Core.Services.Interfaces.Generic;
+using Tekus.Providers.Application.DTOs.Catalog;
+#endregion
 
-namespace Tekus.Providers.Application.Interfaces.Catalog
+namespace Tekus.Providers.Application.Interfaces.Catalog;
+
+public interface ICatalogService : IGenericService<CatalogDTO>
 {
-    public interface ICatalogService
-    {
-        Task<IEnumerable<CatalogDTO>> GetAllAsync();
-        Task<CatalogDTO?> GetByIdAsync(Guid id);
-        Task<CatalogDTO> CreateAsync(CreateCatalogDTO dto);
-        Task<CatalogDTO> UpdateAsync(Guid id, UpdateCatalogDTO dto);
-        Task DeleteAsync(Guid id);
-    }
 }

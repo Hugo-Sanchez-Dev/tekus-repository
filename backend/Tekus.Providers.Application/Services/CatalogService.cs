@@ -31,7 +31,7 @@ namespace Tekus.Providers.Application.Services
             return catalog == null ? null : _mapper.Map<CatalogDTO>(catalog);
         }
 
-        public async Task<CatalogDTO> CreateAsync(CreateCatalogDTO dto)
+        public async Task<CatalogDTO> CreateAsync(CatalogDTO dto)
         {
             Catalog catalog = new Catalog(dto.Name, dto.HourlyRate);
             await _unitOfWork.Catalogs.AddAsync(catalog);
@@ -39,11 +39,11 @@ namespace Tekus.Providers.Application.Services
             return _mapper.Map<CatalogDTO>(catalog);
         }
 
-        public async Task<CatalogDTO> UpdateAsync(Guid id, UpdateCatalogDTO dto)
+        public async Task<CatalogDTO> UpdateAsync(Guid id, CatalogDTO dto)
         {
-            Catalog? catalog = await _unitOfWork.Catalogs.GetByIdAsync(id);
+            Catalog? catalog = await _unitOfWork.Catalogs.GetByIdAsync(dto.Id);
             if (catalog == null)
-                throw new KeyNotFoundException($"Catalog {id} not found");
+                throw new KeyNotFoundException($"Catalog {dto.Id} not found");
 
             catalog.Update(dto.Name, dto.HourlyRate);
             await _unitOfWork.Catalogs.UpdateAsync(catalog);

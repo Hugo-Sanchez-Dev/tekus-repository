@@ -1,8 +1,13 @@
 #region Usings
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PriceCore.WebApi.Handlers;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Text;
+using Tekus.Providers.API.Handler;
 using Tekus.Providers.Application.Interfaces.Auth;
 using Tekus.Providers.Application.Interfaces.Catalog;
 using Tekus.Providers.Application.Interfaces.Country;
@@ -11,6 +16,7 @@ using Tekus.Providers.Application.Interfaces.ProviderCatalog;
 using Tekus.Providers.Application.Mapping;
 using Tekus.Providers.Application.Services;
 using Tekus.Providers.Application.Services.Auth;
+using Tekus.Providers.Application.Validators.Provider;
 using Tekus.Providers.Domain.Repositories;
 using Tekus.Providers.Infrastructure.Data;
 using Tekus.Providers.Infrastructure.Repositories;
@@ -31,6 +37,9 @@ builder.Services.AddScoped<IProviderService, ProviderService>();
 builder.Services.AddScoped<ICatalogService, CatalogService>();
 builder.Services.AddScoped<IProviderCatalogService, ProviderCatalogService>();
 builder.Services.AddScoped<ICountryService, CountryService>();
+
+// Handler
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 // HttpClient for country API
 builder.Services.AddHttpClient<ICountryService, CountryService>(client =>
@@ -63,7 +72,28 @@ builder.Services.AddAuthentication(x =>
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddControllers();
+
+// Fluent Validation
+builder.Services.AddValidatorsFromAssemblyContaining<ProviderDTOValidator>();
+builder.Services.AddFluentValidationAutoValidation(configuration =>
+{
+    // ResponseDTO use for validations
+    configuration.OverrideDefaultResultFactoryWith<CustomValidationResponseFactory>();
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -77,6 +107,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

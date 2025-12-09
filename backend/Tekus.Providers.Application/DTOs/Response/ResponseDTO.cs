@@ -1,16 +1,21 @@
-﻿using SocialMedia.Core.CustomEntities;
+﻿namespace Tekus.Providers.Application.DTOs.Response;
 
-namespace Tekus.Providers.Application.DTOs.Response
+public class ResponseDTO<TData>
 {
-    public record ResponseDTO<T>
+    private HeaderDTO _header;
+    public HeaderDTO Header
     {
-        public ResponseDTO(T data)
+        get
         {
-            Data = data;
+            if (_header == null)
+                _header = new HeaderDTO();
+
+            return _header;
         }
-
-        public T Data { get; set; }
-
-        public Metadata Meta { get; set; }
+        set
+        {
+            _header = value;
+        }
     }
+    public TData Data { get; set; }
 }

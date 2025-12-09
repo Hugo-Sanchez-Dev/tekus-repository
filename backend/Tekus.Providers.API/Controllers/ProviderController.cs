@@ -2,99 +2,68 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tekus.Providers.Application.DTOs.Provider;
+using Tekus.Providers.Application.Enum;
+using Tekus.Providers.Application.Extensions;
 using Tekus.Providers.Application.Interfaces.Provider;
 #endregion
 
-namespace Tekus.Providers.API.Controllers
+namespace Tekus.Providers.API.Controllers;
+
+[Authorize]
+[ApiController]
+[Route("api/[controller]")]
+public class ProviderController : ControllerBase
 {
-    [Authorize]
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProviderController : ControllerBase
+    #region Instances
+    private readonly IProviderService _providerService;
+    #endregion
+
+    public ProviderController(IProviderService providerService)
     {
-        #region Instances
-        private readonly IProviderService _providerService;
-        #endregion
+        _providerService = providerService;
+    }
 
-        public ProviderController(IProviderService providerService)
-        {
-            _providerService = providerService;
-        }
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var providers = await _providerService.GetAllAsync();
+        return Ok(providers.AsResponseDTO(ResponseCodeEnum.OK));
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            try
-            {
-                var providers = await _providerService.GetAllAsync();
-                return Ok(providers);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var provider = await _providerService.GetByIdAsync(id);
+        if (provider == null)
+            return NotFound();
+        return Ok(provider.AsResponseDTO(ResponseCodeEnum.OK));
+    }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            try
-            {
-                var provider = await _providerService.GetByIdAsync(id);
-                if (provider == null)
-                    return NotFound();
-                return Ok(provider);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+    [HttpPost]
+    public async Task<IActionResult> Create(ProviderDTO dto)
+    {
+        var provider = await _providerService.CreateAsync(dto);
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = provider.Id },
+            provider.AsResponseDTO(ResponseCodeEnum.OK));
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateProviderDTO dto)
-        {
-            try
-            {
-                var provider = await _providerService.CreateAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = provider.Id }, provider);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+    [HttpPut]
+    public async Task<IActionResult> Update(Guid id, [FromBody] ProviderDTO dto)
+    {
+        if (id != dto.Id)
+            return BadRequest(ResponseCodeEnum.BAD_REQUEST.AsResponseDTO("The URL Id does not match the request body Id."));
+        
+        var provider = await _providerService.UpdateAsync(id, dto);
+        return Ok(provider.AsResponseDTO(ResponseCodeEnum.OK));
+    }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, UpdateProviderDTO dto)
-        {
-            try
-            {
-                var provider = await _providerService.UpdateAsync(id, dto);
-                return Ok(provider);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            try
-            {
-                await _providerService.DeleteAsync(id);
-                return NoContent();
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound();
-            }
-        }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _providerService.DeleteAsync(id);
+        return Ok(ResponseCodeEnum.OK.AsResponseDTO());
     }
 }
+
