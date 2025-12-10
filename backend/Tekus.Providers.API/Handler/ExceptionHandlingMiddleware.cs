@@ -19,7 +19,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
         }
         catch (ValidationException ex)
         {
-            var result = ResponseCodeEnum.BAD_REQUEST.AsResponseDTO(ex.Message);
+            ResponseDTO<object> result = ResponseCodeEnum.BAD_REQUEST.AsResponseDTO(ex.Message);
 
             context.Response.StatusCode = (int)result.Header.ResponseCode;
             context.Response.ContentType = "application/json";

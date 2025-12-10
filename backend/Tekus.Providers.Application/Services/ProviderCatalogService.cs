@@ -44,11 +44,11 @@ public class ProviderCatalogService : IProviderCatalogService
         return _mapper.Map<ProviderCatalogDTO>(created);
     }
 
-    public async Task<ProviderCatalogDTO> UpdateAsync(ProviderCatalogDTO dto)
+    public async Task<ProviderCatalogDTO> UpdateAsync(Guid id, ProviderCatalogDTO dto)
     {
-        ProviderCatalog? providerCatalog = await _unitOfWork.ProviderCatalogs.GetByIdAsync(dto.Id);
+        ProviderCatalog? providerCatalog = await _unitOfWork.ProviderCatalogs.GetByIdAsync(id);
         if (providerCatalog == null)
-            throw new KeyNotFoundException($"providerCatalog {dto.Id} not found");
+            throw new KeyNotFoundException($"providerCatalog {id} not found");
 
         string countriesJson = JsonSerializer.Serialize(dto.Countries);
         providerCatalog.UpdateCountries(countriesJson);

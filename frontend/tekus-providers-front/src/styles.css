@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+@theme{
+  --color-tekus: #5BB09F;
+  --color-tekus-secondary: #16006F;
+}

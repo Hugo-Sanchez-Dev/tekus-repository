@@ -26,14 +26,14 @@ public class CatalogController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var catalogs = await _catalogService.GetAllAsync();
+        IEnumerable<CatalogDTO> catalogs = await _catalogService.GetAllAsync();
         return Ok(catalogs.AsResponseDTO(ResponseCodeEnum.OK));
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var catalog = await _catalogService.GetByIdAsync(id);
+        CatalogDTO catalog = await _catalogService.GetByIdAsync(id);
         if (catalog == null)
             return NotFound();
         return Ok(catalog.AsResponseDTO(ResponseCodeEnum.OK));
@@ -42,7 +42,7 @@ public class CatalogController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CatalogDTO dto)
     {
-        var catalog = await _catalogService.CreateAsync(dto);
+        CatalogDTO catalog = await _catalogService.CreateAsync(dto);
         return CreatedAtAction(
             nameof(GetById),
             new { id = catalog.Id },
@@ -50,13 +50,13 @@ public class CatalogController : ControllerBase
             );
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, CatalogDTO dto)
     {
         if (id != dto.Id)
             return BadRequest(ResponseCodeEnum.BAD_REQUEST.AsResponseDTO("The URL Id does not match the request body Id."));
 
-        var catalog = await _catalogService.UpdateAsync(id, dto);
+        CatalogDTO catalog = await _catalogService.UpdateAsync(id, dto);
         return Ok(catalog.AsResponseDTO(ResponseCodeEnum.OK));
     }
 

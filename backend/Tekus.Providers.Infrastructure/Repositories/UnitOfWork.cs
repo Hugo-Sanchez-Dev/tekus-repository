@@ -8,6 +8,7 @@ namespace Tekus.Providers.Infrastructure.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly TekusProvidersContext _context;
+        private IReportRepository? _reports;
         private IProviderRepository? _providers;
         private ICatalogRepository? _catalogs;
         private IProviderCatalogRepository? _providerCatalogs;
@@ -16,6 +17,9 @@ namespace Tekus.Providers.Infrastructure.Repositories
         {
             _context = context;
         }
+
+        public IReportRepository Reports =>
+            _reports ??= new ReportRepository(_context);
 
         public IProviderRepository Providers =>
             _providers ??= new ProviderRepository(_context);

@@ -35,9 +35,9 @@ public class CountryService : ICountryService
 
             _cachedCountries = countries?
                 .Select(c => new CountryDTO(
-                    c.Cca2,
-                    c.Name.Common,
-                    c.Flags.Png
+                    c.cca2,
+                    c.name.common,
+                    c.flags.png
                 ))
                 .OrderBy(c => c.Name)
                 .ToList() ?? new List<CountryDTO>();

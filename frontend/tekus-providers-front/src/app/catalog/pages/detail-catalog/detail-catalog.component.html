@@ -1,0 +1,59 @@
+<div class="p-6 max-w-5xl mx-auto">
+  <div class="mb-6 flex justify-between items-center">
+    <div>
+      <h1 class="text-3xl font-bold text-tekus">Detalle del Servicio</h1>
+      <p class="text-gray-500 mt-2">Información completa del servicio</p>
+    </div>
+    <div class="space-x-3">
+      <button
+        (click)="onEdit()"
+        class="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition cursor-pointer"
+      >
+        Editar
+      </button>
+      <button
+        (click)="goBack()"
+        class="px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition cursor-pointer"
+      >
+        Volver
+      </button>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="bg-white shadow-xl rounded-lg p-8 text-center">
+      <p class="text-indigo-600 font-semibold">Cargando datos...</p>
+    </div>
+  } @else if (catalog) {
+    <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+
+      <div class="bg-linear-to-r from-indigo-500 to-indigo-600 px-8 py-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-white">{{ catalog.name }}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-8">
+        <div class="mb-8">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Información Básica</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <p class="text-sm text-gray-500 mb-1">Tipo de Documento</p>
+              <p class="text-base font-medium text-gray-900">NIT</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500 mb-1">Valor por hora</p>
+              <p class="text-base font-medium text-gray-900">{{ catalog.hourlyRate }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-500 mb-1">Fecha de Registro</p>
+              <p class="text-base font-medium text-gray-900">{{ catalog.createdAt | date:'medium' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

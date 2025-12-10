@@ -54,9 +54,9 @@ public class ProviderService : IProviderService
 
     public async Task<ProviderDTO> UpdateAsync(Guid id, ProviderDTO dto)
     {
-        Provider? provider = await _unitOfWork.Providers.GetByIdAsync(dto.Id);
+        Provider? provider = await _unitOfWork.Providers.GetByIdAsync(id);
         if (provider == null)
-            throw new KeyNotFoundException($"Provider {dto.Id} not found");
+            throw new KeyNotFoundException($"Provider {id} not found");
 
         string? customFieldsJson = dto.CustomFields != null
             ? JsonSerializer.Serialize(dto.CustomFields)

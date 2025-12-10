@@ -13,6 +13,7 @@ using Tekus.Providers.Application.Interfaces.Catalog;
 using Tekus.Providers.Application.Interfaces.Country;
 using Tekus.Providers.Application.Interfaces.Provider;
 using Tekus.Providers.Application.Interfaces.ProviderCatalog;
+using Tekus.Providers.Application.Interfaces.Report;
 using Tekus.Providers.Application.Mapping;
 using Tekus.Providers.Application.Services;
 using Tekus.Providers.Application.Services.Auth;
@@ -33,6 +34,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IProviderService, ProviderService>();
 builder.Services.AddScoped<ICatalogService, CatalogService>();
 builder.Services.AddScoped<IProviderCatalogService, ProviderCatalogService>();
@@ -109,6 +111,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

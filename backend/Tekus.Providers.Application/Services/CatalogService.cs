@@ -41,9 +41,9 @@ namespace Tekus.Providers.Application.Services
 
         public async Task<CatalogDTO> UpdateAsync(Guid id, CatalogDTO dto)
         {
-            Catalog? catalog = await _unitOfWork.Catalogs.GetByIdAsync(dto.Id);
+            Catalog? catalog = await _unitOfWork.Catalogs.GetByIdAsync(id);
             if (catalog == null)
-                throw new KeyNotFoundException($"Catalog {dto.Id} not found");
+                throw new KeyNotFoundException($"Catalog {id} not found");
 
             catalog.Update(dto.Name, dto.HourlyRate);
             await _unitOfWork.Catalogs.UpdateAsync(catalog);

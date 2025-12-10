@@ -2,6 +2,6 @@
 {
     public class CountryFlags
     {
-        public string Png { get; set; } = "";
+        public string png { get; set; } = "";
     }
 }

@@ -1,0 +1,106 @@
+<div class="p-8 bg-white shadow-xl rounded-lg border border-gray-100">
+
+  <h1 class="text-3xl font-extrabold text-tekus mb-4 border-b-2 border-indigo-100 pb-2">
+    Prueba Técnica Tekus: Implementación CRUD de Proveedores
+  </h1>
+
+  <p class="text-gray-700 leading-relaxed mb-4">
+    <strong class="font-semibold text-gray-800">Solución desarrollada para la prueba técnica solicitada.</strong>
+    La aplicación se ha construido utilizando
+    <span class="bg-indigo-100 text-indigo-700 px-1 py-0.5 rounded text-sm">Angular 19 (Standalone Components)</span>
+    y
+    <span class="bg-cyan-100 text-cyan-700 px-1 py-0.5 rounded text-sm">Tailwind CSS 4</span>,
+    enfocándose en la implementación de un flujo
+    <strong class="text-green-600">CRUD</strong> (Crear, Consultar, Modificar, Eliminar) para la entidad Proveedores,
+    con comunicación
+    <span class="font-semibold text-red-600">RESTful segura</span> mediante
+    <strong class="text-red-700">JWT</strong>.
+  </p>
+</div>
+
+<div class="p-6 space-y-6 bg-slate-50 min-h-screen">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Información general del sistema</h1>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-linear-to-br from-emerald-600 to-emerald-700">
+        <h2 class="font-bold text-3xl text-white">Serivicios por paises</h2>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-slate-600">
+          <thead class="bg-slate-50 text-xs uppercase font-semibold text-slate-500">
+            <tr>
+              <th class="px-6 py-3">Pais</th>
+              <th class="px-6 py-3">Cantidad de servicios</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            @for (item of catalogPerCountry; track item.country) {
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="px-6 py-4 font-medium text-slate-900">{{ item.country }}</td>
+                <td class="px-6 py-4">{{ item.catalogQuantity }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
+        <h3 class="font-bold text-slate-800 mb-4">
+          Ranking de proveedores con más servicios
+          <span class="material-symbols-outlined text-amber-500">
+            trophy
+          </span>
+        </h3>
+
+        <ul class="space-y-3">
+          <li *ngFor="let item of providerRanking" class="flex items-center gap-3 p-3 rounded-lg border transition-colors">
+
+            <div class="shrink-0 w-8 h-8 flex items-center justify-center rounded-full font-bold text-sm">
+              {{ item.position }}
+            </div>
+
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-slate-800">
+                {{ item.providerName }}
+              </p>
+              <p class="text-xs text-slate-600">
+                {{ item.catalogQuantity }} servicios activos
+              </p>
+            </div>
+          </li>
+        </ul>
+
+        <div *ngIf="providerRanking.length === 0" class="text-center text-slate-400 py-4 text-sm">
+          No hay datos para mostrar.
+        </div>
+      </div>
+
+      <div class="bg-linear-to-br from-cyan-600 to-cyan-700 rounded-xl shadow-lg p-5 text-white">
+        <h3 class="font-bold mb-2">Gestionar proveedores</h3>
+        <p class="text-indigo-100 text-sm mb-4">Configura los proveedores y asigna su catálogo de servicios.</p>
+        <button (click)="navigateToProviders()"
+          class="w-full bg-white text-indigo-600 py-2 rounded-lg font-semibold hover:bg-indigo-50 transition-colors cursor-pointer">
+          Ir a Proveedores
+        </button>
+      </div>
+
+      <div class="bg-linear-to-br from-indigo-600 to-violet-700 rounded-xl shadow-lg p-5 text-white">
+        <h3 class="font-bold mb-2">Gestionar Servicios</h3>
+        <p class="text-indigo-100 text-sm mb-4">Configura los catálogos de servicios disponibles.</p>
+        <button (click)="navigateToCatalogs()"
+          class="w-full bg-white text-indigo-600 py-2 rounded-lg font-semibold hover:bg-indigo-50 transition-colors cursor-pointer">
+          Ir al Catálogo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

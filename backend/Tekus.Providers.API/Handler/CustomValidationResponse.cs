@@ -19,7 +19,7 @@ public class CustomValidationResponseFactory : IFluentValidationAutoValidationRe
                 kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
             );
 
-        var response = new ResponseDTO<object>()
+        ResponseDTO<object> response = new ResponseDTO<object>()
         {
             Header = new HeaderDTO
             {

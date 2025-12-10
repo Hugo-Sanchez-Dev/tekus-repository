@@ -1,6 +1,7 @@
 ﻿#region Usings
 using Microsoft.EntityFrameworkCore;
 using Tekus.Providers.Domain.Entities;
+using Tekus.Providers.Domain.Models;
 #endregion
 
 namespace Tekus.Providers.Infrastructure.Data
@@ -32,6 +33,18 @@ namespace Tekus.Providers.Infrastructure.Data
                 .HasForeignKey(ps => ps.CatalogId);
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ProviderCatalogRankingResult>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView(null);
+            });
+
+            modelBuilder.Entity<CountryCatalogsResult>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView(null);
+            });
         }
     }
 }

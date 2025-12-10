@@ -1,8 +1,15 @@
-﻿namespace Tekus.Providers.Application.DTOs.Country
+﻿namespace Tekus.Providers.Application.DTOs.Country;
+
+public class CountryDTO
 {
-    public record CountryDTO(
-    string Code,
-    string Name,
-    string Flag
-    );
+    public string Code { get; set; }
+    public string Name { get; set; }
+    public string Flag { get; set; }
+
+    public CountryDTO(string code, string name, string flag)
+    {
+        Code = code;
+        Name = name;
+        Flag = flag;
+    }
 }

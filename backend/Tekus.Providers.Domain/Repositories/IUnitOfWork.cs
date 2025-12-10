@@ -2,6 +2,7 @@
 {
     public interface IUnitOfWork
     {
+        IReportRepository Reports { get; }
         IProviderRepository Providers { get; }
         ICatalogRepository Catalogs { get; }
         IProviderCatalogRepository ProviderCatalogs { get; }
